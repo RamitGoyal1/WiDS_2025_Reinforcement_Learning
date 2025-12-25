@@ -91,6 +91,7 @@ def random_policy(state, env):
     Random policy:
     Returns 0 (left) or 1 (right) with equal probability.
     """
+    return random.choice([0, 1])
     
 
 
@@ -103,6 +104,15 @@ def monotonous_policy(state, env):
     - When at a wall, reverse direction.
     Uses a global variable to track current direction.
     """
+    if not hasattr(monotonous_policy, "direction"):
+        monotonous_policy.direction = 1
+
+    if state == 0:
+        monotonous_policy.direction = 1 
+    elif state == env.N - 1:
+        monotonous_policy.direction = 0 
+        
+    return monotonous_policy.direction
     
 def wildcard_policy(state, env):
     """
@@ -114,7 +124,14 @@ def wildcard_policy(state, env):
     - If in the right half, move left.
     This does NOT use the hidden goal_state.
     """
+    center = env.N // 2
     
+    if state < center:
+        return 1 
+    elif state > center:
+        return 0 
+    else:
+        return random.choice([0, 1])
 
 # ========================
 # Episode runner
